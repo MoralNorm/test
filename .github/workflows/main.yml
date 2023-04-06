@@ -37,7 +37,7 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE"/get_a13_files
           ORIGIN_ZIP_NAME=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
           md5sum "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME"
-          for i in product; do
+          for i in system_ext product; do
               if [[ $i == mi_ext ]]; then
                   if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]]; then
                       break
@@ -62,6 +62,8 @@ jobs:
           device: ${{ github.event.inputs.build_device }}
       - name: 4.提取指定文件
         run: |
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/system_ext
+          sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/system_ext/priv-app/MiuiSystemUI/MiuiSystemUI.apk "$GITHUB_WORKSPACE"/get_a13_files
           mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/product
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MIUISystemUIPlugin/MIUISystemUIPlugin.apk "$GITHUB_WORKSPACE"/get_a13_files
         env:
